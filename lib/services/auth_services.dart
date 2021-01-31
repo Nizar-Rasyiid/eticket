@@ -5,7 +5,8 @@ class AuthServices {
 
   // ignore: missing_return
   static Future<SignInSignUpResult> signUp(String email, String password,
-  String name, List<String> selectedGenres, String selectedLanguage) async {
+  String name, List<String> selectedGenres, String selectedLanguage)
+   async {
     try{
       AuthResult result = await _auth.createUserWithEmailAndPassword(
         email: email, password: password);
@@ -20,7 +21,20 @@ class AuthServices {
 
       return SignInSignUpResult(user: user);
 
-    }catch (e) {}
+    }catch (e) {
+      return SignInSignUpResult(message: e.toString().split(',')[1]);
+    }
+  }
+  static Future<SignInSignUpResult> signIn(String email, String password) async{
+    try {
+      AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password:password);
+
+      User user = await result.user.fromFireStore();
+
+      return SignInSignUpResult(user: user);
+    } catch (e) {
+      return SignInSignUpResult(message: e.toString().split(',')[1]);
+    }
   }
 }
 
