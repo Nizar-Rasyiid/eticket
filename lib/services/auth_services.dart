@@ -35,7 +35,13 @@ class AuthServices {
     } catch (e) {
       return SignInSignUpResult(message: e.toString().split(',')[1]);
     }
+   
   }
+   static Future<void> signOut() async{
+      await _auth.signOut();
+    }
+
+    static Stream<FirebaseUser> get userStream => _auth.onAuthStateChanged;
 }
 
 class SignInSignUpResult {
