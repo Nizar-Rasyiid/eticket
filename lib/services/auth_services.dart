@@ -5,7 +5,7 @@ class AuthServices {
 
   // ignore: missing_return
   static Future<SignInSignUpResult> signUp(String email, String password,
-  String name, List<String> selectedGenres, String selectedLanguage)
+  String name, String numberPhone)
    async {
     try{
       AuthResult result = await _auth.createUserWithEmailAndPassword(
@@ -13,8 +13,7 @@ class AuthServices {
 
       User user = result.user.convertToUser(
         name: name,
-        selectedGenres: selectedGenres,
-        selectedLanguage: selectedLanguage
+        numberPhone: numberPhone,
       );
 
       await UserServices.updateUser(user);
@@ -42,10 +41,17 @@ class AuthServices {
     }
 
     static Stream<FirebaseUser> get userStream => _auth.onAuthStateChanged;
+    static Future<void> resetPassword(String email) async {
+      await _auth.sendPasswordResetEmail(email: email);
+    }
 }
 
 class SignInSignUpResult {
   final User user;
   final String message;
   SignInSignUpResult({this.user, this.message});
+}
+
+class Name {
+  
 }

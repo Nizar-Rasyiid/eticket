@@ -3,14 +3,40 @@ part of 'pages.dart';
 class SignUpPage extends StatefulWidget {
   @override
   _SignUpPageState createState() => _SignUpPageState();
+    // final TextEditingController _usernameEditingController = TextEditingController();
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  TextEditingController usernameText = TextEditingController();
+  TextEditingController emailText = TextEditingController();
+  TextEditingController passwordText = TextEditingController();
+  TextEditingController numberPhoneText = TextEditingController();
+
+  void notif (){
+    int count = 0;
+     AlertDialog alertDialog = AlertDialog(
+       content:Container(
+         height: 100,
+         child: Column(
+           children: [
+             Text("Registrasi Berhasil"),
+             RaisedButton(
+               child: Text("OK"),
+               onPressed: ()=> Navigator.of(context).popUntil((_)=> count++ >=2),
+             )
+           ],
+         ),
+       ),
+     );
+     showDialog(context: context,child: alertDialog);
+  }
+  
   @override
   Widget build(BuildContext context) {
+    //Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
-        width: double.maxFinite,
+        width: double.infinity,
         decoration: BoxDecoration(
           color: Colors.grey[200],
         ),
@@ -62,12 +88,14 @@ class _SignUpPageState extends State<SignUpPage> {
              child: ListView(
                 children: [
                   SizedBox(height: 20,),
-                       Container(
+                       Form(
+                         child: Column(children: [Container(
                          
                        padding: EdgeInsets.symmetric(horizontal: 20),
                         
                         decoration: BoxDecoration(),
                         child: TextField(
+                          controller: usernameText,
                           scrollPadding: EdgeInsets.only(right: 5),
                           decoration: InputDecoration(
                             hintText: "Username",
@@ -87,6 +115,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       padding: EdgeInsets.symmetric(horizontal: 20),
                         decoration: BoxDecoration(),
                         child: TextField(
+                          controller:numberPhoneText,
                           scrollPadding: EdgeInsets.only(right: 5),
                           decoration: InputDecoration(
                             hintText: "Phone Number",
@@ -106,6 +135,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       padding: EdgeInsets.symmetric(horizontal: 20),
                         decoration: BoxDecoration(),
                         child: TextField(
+                          controller: emailText,
                           scrollPadding: EdgeInsets.only(right: 5),
                           decoration: InputDecoration(
                             hintText: "Email Address",
@@ -129,6 +159,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                         ),
                         child: TextField(
+                          controller: passwordText,
                           decoration: InputDecoration(
                             hintText: "Password",
                             hintStyle: TextStyle(color: Colors.grey),
@@ -142,12 +173,23 @@ class _SignUpPageState extends State<SignUpPage> {
                           style: TextStyle(fontSize: 18),
                           obscureText: true,
                         ),
-                      ),
+                      ),],),
+                       ),
                       SizedBox(height: 20),
-                      GestureDetector(onTap: () {
-                               Navigator.push(context, MaterialPageRoute(builder: (context){
-                                 return MainPage();
-                               }));
+                      GestureDetector(onTap: () async{
+                              SignInSignUpResult result = await AuthServices.signUp(
+                                emailText.text,
+                                passwordText.text,
+                                usernameText.text,
+                                numberPhoneText.text
+                              );
+                              if (result.user == null) {
+                                print(result.message);
+                               
+                              } else{
+                                 notif();
+                                print(result.user.toString());
+                              }
                              },
                              child: Container(
                                height: 70,
@@ -167,6 +209,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
                              )
                              ),
+                             
                       
                         //    Container(
                         //   height: 70,

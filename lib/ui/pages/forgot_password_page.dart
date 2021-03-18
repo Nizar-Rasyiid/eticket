@@ -6,6 +6,8 @@ class ForgetPasswordPage extends StatefulWidget {
 }
 
 class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
+  TextEditingController emailText = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,6 +77,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                  Container(
                     padding: EdgeInsets.symmetric(horizontal: 5),
                     child: TextField(
+                      controller: emailText,
                       decoration: InputDecoration(
                         hintText: "Email Address",
                         hintStyle: TextStyle(color: Colors.grey),
@@ -89,12 +92,20 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                   ),
                   SizedBox(height: 19,),
                   GestureDetector(
-                      onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return CheckEmailPage();
-                        }));
-                      },
+                     onTap: () {
+                          
+                         try {
+                           AuthServices.resetPassword(emailText.text);
+                            Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                              
+                            return CheckEmailPage();
+                          }));
+                         } catch (e) {
+                           throw 'gagal';
+                         }
+                        },
+                     
                       child: Container(
                         height: 70,
                         margin: EdgeInsets.symmetric(horizontal: 5),
@@ -110,7 +121,8 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                                 fontSize: 20),
                           ),
                         ),
-                      )),
+                      ),
+                    ),
               ],
             ),
           ),

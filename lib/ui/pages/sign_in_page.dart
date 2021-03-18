@@ -6,6 +6,8 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
+ TextEditingController emailController = TextEditingController();
+ TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,6 +79,7 @@ class _SignInPageState extends State<SignInPage> {
                               color: Color.fromRGBO(100, 85, 194, 0.4)),
                         ),
                       ),
+                      controller: emailController,
                     ),
                   ),
                   SizedBox(
@@ -102,6 +105,7 @@ class _SignInPageState extends State<SignInPage> {
                       ),
                       style: TextStyle(fontSize: 18),
                       obscureText: true,
+                      controller:  passwordController,
                     ),
                   ),
                   SizedBox(
@@ -140,13 +144,17 @@ class _SignInPageState extends State<SignInPage> {
                   ),
                   SizedBox(height: 18),
                   GestureDetector(
-                      onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return MainPage();
-                          AuthServices.signIn(
-                              "nizarrasyiid1221@gmail.com", "smkBisa123");
-                        }));
+                      onTap: () async{
+                          SignInSignUpResult result= await AuthServices.signIn(emailController.text,passwordController.text);
+
+                          if (result.user == null) {
+                            print(result.message);
+                          }else{
+                            Navigator.push(context ,MaterialPageRoute(builder: (context) {
+                              return Wrapper();
+                            }));
+                            print("success");
+                          }
                       },
                       child: Container(
                         height: 70,

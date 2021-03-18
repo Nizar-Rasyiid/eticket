@@ -6,8 +6,37 @@ class CheckEmailPage extends StatefulWidget {
 }
 
 class _CheckEmailPage extends State<CheckEmailPage> {
+  //  bool _showSystemApps = false;
+  // bool _onlyLaunchableApps = false;
+
+  // Future<void> _launched;
+  // String _launchUrl = "https://www.gmail.com/mail";
+  TextEditingController forEmailController = TextEditingController();
+
+  
+
+  // Future<void> _launchInBrowser(String url) async{
+  //   if (await canLaunch(url)) {
+  //     await launch(url, forceWebView:false,forceSafariVC:false,
+  //     headers: <String, String> {'header_key' : 'header_value'},
+  //     );
+  //   } else{
+  //     throw 'Can launch $url';
+  //   }
+    
+  // }
+  // Future<void> _launchInApp(String url) async{
+  //   if (await canLaunch(url)) {
+  //     await launch(url, forceWebView:true,forceSafariVC:false,
+  //     headers: <String, String> {'header_key' : 'header_value'},
+  //     );
+  //   } else{
+  //     throw 'Cant launch $url';
+  //   }
+  // }
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: Container(
         width: double.maxFinite,
@@ -71,9 +100,8 @@ class _CheckEmailPage extends State<CheckEmailPage> {
             SizedBox(height: 46),
             GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return SignInPage();
-                  }));
+                //  _launchInApp(_launchUrl); 
+                DeviceApps.openApp('com.google.android.gm');
                 },
                 child: Container(
                   height: 70,
